@@ -10,7 +10,7 @@ export default function Register() {
   const handleSubmit = async () => {
     try {
       const url = `${API}/api/users/register`;
-     // const url = "  https://backend-cafe-delta.vercel.app/api/users/register";
+     // const url = "/api/users/register";
       const result = await axios.post(url, user);
       setError("Data saved successfully");
     } catch (err) {
