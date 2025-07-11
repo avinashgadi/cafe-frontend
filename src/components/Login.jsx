@@ -18,6 +18,7 @@ export default function Register() {
       setError("Something went wrong");
     }
   };
+  
   return (
     <div className="App-Register-Row">
       <div style={{ backgroundColor: "white" }}>

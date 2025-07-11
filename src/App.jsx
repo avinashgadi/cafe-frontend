@@ -7,7 +7,6 @@ import Login from'./components/Login.jsx'
 function App() {
   return (
      <div>
-      
        <center>
         <h1>Anvi's Cafe</h1>
       <p>Welcome to the cafe.</p>
