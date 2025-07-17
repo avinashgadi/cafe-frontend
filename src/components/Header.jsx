@@ -6,7 +6,7 @@ export default function Header() {
   const { user } = useContext(AppContext);
   return (
     <div>
-      <h1>MERN Frontend</h1>
+      <h1>Anvi's Cafe</h1>
       <Link to="/">Home</Link>-<Link to="/cart">MyCart</Link>-
       <Link to="/order">MyOrder</Link>
 
