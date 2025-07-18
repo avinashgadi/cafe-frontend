@@ -7,6 +7,7 @@ export default function Product() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState();
   const [loading, setLoading] = useState(true);
+  const [addedMsg, setAddedMsg] = useState("");
   const { user, cart, setCart } = useContext(AppContext);
 
   const fetchProducts = async () => {
@@ -31,6 +32,8 @@ export default function Product() {
     if (!found) {
       product.qty = 1;
       setCart([...cart, product]);
+      setAddedMsg(`${product.productName} added to cart!`);
+      setTimeout(() => setAddedMsg(""), 1500);
     }
   };
 
@@ -39,22 +42,31 @@ export default function Product() {
 
   return (
     <main>
+      {addedMsg && (
+        <div className="center" style={{ position: 'fixed', top: '80px', left: 0, right: 0, zIndex: 1000 }}>
+          <div style={{ background: 'var(--primary)', color: '#fff', padding: '0.8rem 2rem', borderRadius: '12px', fontWeight: 600, boxShadow: '0 4px 24px rgba(60,40,20,0.13)', fontSize: '1.1rem', letterSpacing: '0.02em' }}>
+            {addedMsg}
+          </div>
+        </div>
+      )}
       <div className="product-grid">
         {products && products.length > 0 ? (
           products.map((product) => (
             <div className="card product-card" key={product._id}>
-              <div className="product-img-wrap center" style={{ marginBottom: '1rem' }}>
-                <img
-                  src={product.imgUrl}
-                  alt={product.productName}
-                  style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '12px', boxShadow: '0 2px 8px rgba(60,40,20,0.08)' }}
-                />
-              </div>
-              <h3 style={{ margin: '0.5rem 0', fontSize: '1.2rem', fontWeight: 600 }}>{product.productName}</h3>
-              <p style={{ color: '#6d4c41', minHeight: '48px', margin: '0.5rem 0' }}>{product.description}</p>
-              <div className="flex-between" style={{ marginTop: '1rem', alignItems: 'center' }}>
-                <span style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--primary-dark)' }}>₹{product.price}</span>
-                <button onClick={() => addToCart(product)} style={{ minWidth: '120px' }}>Add to Cart</button>
+              <div className="product-card-inner">
+                <div className="product-img-wrap center" style={{ marginBottom: '1rem' }}>
+                  <img
+                    src={product.imgUrl}
+                    alt={product.productName}
+                    style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '12px', boxShadow: '0 2px 8px rgba(60,40,20,0.08)' }}
+                  />
+                </div>
+                <h3 className="product-title-centered">{product.productName}</h3>
+                <p className="product-desc-centered">{product.description}</p>
+                <div className="flex-between product-bottom-row">
+                  <span className="product-price">₹{product.price}</span>
+                  <button onClick={() => addToCart(product)} style={{ minWidth: '120px' }}>Add to Cart</button>
+                </div>
               </div>
             </div>
           ))
@@ -74,6 +86,35 @@ export default function Product() {
           flex-direction: column;
           align-items: stretch;
           min-height: 340px;
+          transition: box-shadow 0.22s cubic-bezier(.4,0,.2,1), transform 0.18s cubic-bezier(.4,0,.2,1);
+          cursor: pointer;
+          justify-content: center;
+        }
+        .product-card-inner {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+        }
+        .product-card:hover {
+          box-shadow: 0 8px 32px rgba(60,40,20,0.16);
+          transform: translateY(-6px) scale(1.025);
+        }
+        .product-title-centered {
+          margin: 0.5rem 0 0.2rem 0;
+          font-size: 1.2rem;
+          font-weight: 600;
+          text-align: center;
+          letter-spacing: 0.01em;
+        }
+        .product-desc-centered {
+          color: #6d4c41;
+          min-height: 48px;
+          margin: 0.2rem 0 0.5rem 0;
+          text-align: center;
+          font-size: 1.01rem;
+          line-height: 1.4;
         }
         .product-img-wrap {
           width: 100%;
@@ -81,6 +122,17 @@ export default function Product() {
           display: flex;
           align-items: center;
           justify-content: center;
+        }
+        .product-bottom-row {
+          width: 100%;
+          margin-top: 1rem;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .product-price {
+          font-weight: 700;
+          font-size: 1.1rem;
+          color: var(--primary-dark);
         }
         @media (max-width: 700px) {
           .product-grid {
