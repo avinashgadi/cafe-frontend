@@ -1,3 +1,99 @@
-* {
-    margin: 0px
+/* Minimal reset, all main styles in App.css */
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base styles */
+body {
+  background: #f8f5f2;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  color: #3e2723;
+}
+
+/* Header and Footer */
+header, footer {
+  background: #fff8f0;
+  box-shadow: 0 2px 8px rgba(60, 40, 20, 0.05);
+  border-radius: 0 0 16px 16px;
+  padding: 1.5rem 2rem;
+}
+
+/* Main content */
+main {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Card style for products, orders, etc. */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(60, 40, 20, 0.08);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Buttons */
+button {
+  background: #a1887f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #6d4c41;
+}
+
+/* Inputs */
+input, select, textarea {
+  border: 1px solid #d7ccc8;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  background: #fff;
+  color: #3e2723;
+}
+
+/* Links */
+a {
+  color: #6d4c41;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover {
+  color: #a1887f;
+}
+
+/* Utility classes */
+.flex {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  main {
+    padding: 1rem;
+  }
+  .card {
+    padding: 1rem;
+  }
+  header, footer {
+    padding: 1rem;
+  }
 }

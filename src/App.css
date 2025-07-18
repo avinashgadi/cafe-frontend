@@ -1,3 +1,145 @@
-.App-Container{
-    background-color: #eeeeee;
+/* Modern Cafe UI Global Styles */
+:root {
+  --primary: #a1887f;
+  --primary-dark: #6d4c41;
+  --accent: #ffe0b2;
+  --bg: #f8f5f2;
+  --surface: #fff8f0;
+  --text: #3e2723;
+  --radius: 18px;
+  --shadow: 0 4px 24px rgba(60, 40, 20, 0.10);
+  --transition: 0.2s cubic-bezier(.4,0,.2,1);
+}
+
+body {
+  background: var(--bg);
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  transition: background var(--transition);
+}
+
+/* Header and Footer */
+header, footer {
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border-radius: 0 0 var(--radius) var(--radius);
+  padding: 1.5rem 2rem;
+  transition: background var(--transition), box-shadow var(--transition);
+}
+
+/* Main content */
+main {
+  padding: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Card style for products, orders, etc. */
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  transition: box-shadow var(--transition);
+}
+
+/* Buttons */
+button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background var(--transition), box-shadow var(--transition);
+  box-shadow: 0 2px 8px rgba(60,40,20,0.06);
+}
+
+button:hover {
+  background: var(--primary-dark);
+}
+
+/* Inputs */
+input, select, textarea {
+  border: 1px solid #d7ccc8;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  background: #fff;
+  color: var(--text);
+  transition: border var(--transition);
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* Links */
+a {
+  color: var(--primary-dark);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition);
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+a:hover {
+  color: var(--primary);
+  background: var(--accent);
+}
+
+/* Utility classes */
+.flex {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Responsive Enhancements */
+@media (max-width: 900px) {
+  main {
+    padding: 1rem;
+    max-width: 98vw;
+  }
+  header, footer {
+    padding: 1rem;
+  }
+}
+@media (max-width: 600px) {
+  header, footer {
+    padding: 0.5rem 0.5rem;
+    border-radius: 0 0 12px 12px;
+  }
+  .card {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  main {
+    padding: 0.5rem;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: var(--surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 8px;
 }
