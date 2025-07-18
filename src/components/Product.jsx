@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AppContext } from "../App";
+import { useLocation } from "react-router-dom";
 
 export default function Product() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -9,6 +10,7 @@ export default function Product() {
   const [loading, setLoading] = useState(true);
   const [addedMsg, setAddedMsg] = useState("");
   const { user, cart, setCart } = useContext(AppContext);
+  const location = useLocation();
 
   const fetchProducts = async () => {
     try {
@@ -37,6 +39,13 @@ export default function Product() {
     }
   };
 
+  // Filter products by search query in URL
+  const params = new URLSearchParams(location.search);
+  const searchQuery = params.get("search")?.toLowerCase() || "";
+  const filteredProducts = searchQuery
+    ? products.filter(p => p.productName.toLowerCase().includes(searchQuery))
+    : products;
+
   if (loading) return <div className="center" style={{ minHeight: '40vh' }}><span>Loading products...</span></div>;
   if (error) return <div className="center" style={{ color: 'red', minHeight: '40vh' }}>{error}</div>;
 
@@ -50,23 +59,23 @@ export default function Product() {
         </div>
       )}
       <div className="product-grid">
-        {products && products.length > 0 ? (
-          products.map((product) => (
-            <div className="card product-card" key={product._id}>
-              <div className="product-card-inner">
-                <div className="product-img-wrap center" style={{ marginBottom: '1rem' }}>
-                  <img
-                    src={product.imgUrl}
-                    alt={product.productName}
-                    style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '12px', boxShadow: '0 2px 8px rgba(60,40,20,0.08)' }}
-                  />
-                </div>
-                <h3 className="product-title-centered">{product.productName}</h3>
-                <p className="product-desc-centered">{product.description}</p>
-                <div className="flex-between product-bottom-row">
-                  <span className="product-price">₹{product.price}</span>
-                  <button onClick={() => addToCart(product)} style={{ minWidth: '120px' }}>Add to Cart</button>
-                </div>
+        {filteredProducts && filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <div className="card product-card compact-product-card" key={product._id}>
+              <div className="product-img-center">
+                <img
+                  src={product.imgUrl}
+                  alt={product.productName}
+                  className="product-img-large"
+                />
+              </div>
+              <h3 className="product-title-center">{product.productName}</h3>
+              <p className="product-desc-compact">{product.description}</p>
+              <div className="product-bottom-center-col">
+                <span className="product-price-center">₹{product.price}</span>
+                <button className="product-btn-center" onClick={() => addToCart(product)}>
+                  ADD TO CART
+                </button>
               </div>
             </div>
           ))
@@ -77,70 +86,100 @@ export default function Product() {
       <style>{`
         .product-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
           gap: 2rem;
           margin-top: 2rem;
         }
-        .product-card {
+        .compact-product-card {
+          background: #fff;
+          border-radius: 20px;
+          box-shadow: 0 4px 18px rgba(60,40,20,0.10);
+          padding: 1.2rem 1.2rem 1.1rem 1.2rem;
           display: flex;
           flex-direction: column;
-          align-items: stretch;
-          min-height: 340px;
-          transition: box-shadow 0.22s cubic-bezier(.4,0,.2,1), transform 0.18s cubic-bezier(.4,0,.2,1);
-          cursor: pointer;
-          justify-content: center;
+          align-items: flex-start;
+          min-height: unset;
+          justify-content: flex-start;
         }
-        .product-card-inner {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          height: 100%;
-        }
-        .product-card:hover {
-          box-shadow: 0 8px 32px rgba(60,40,20,0.16);
-          transform: translateY(-6px) scale(1.025);
-        }
-        .product-title-centered {
-          margin: 0.5rem 0 0.2rem 0;
-          font-size: 1.2rem;
-          font-weight: 600;
-          text-align: center;
-          letter-spacing: 0.01em;
-        }
-        .product-desc-centered {
-          color: #6d4c41;
-          min-height: 48px;
-          margin: 0.2rem 0 0.5rem 0;
-          text-align: center;
-          font-size: 1.01rem;
-          line-height: 1.4;
-        }
-        .product-img-wrap {
+        .product-img-center {
           width: 100%;
-          height: 140px;
           display: flex;
-          align-items: center;
           justify-content: center;
-        }
-        .product-bottom-row {
-          width: 100%;
-          margin-top: 1rem;
           align-items: center;
-          justify-content: space-between;
+          margin-bottom: 0.3rem;
         }
-        .product-price {
+        .product-img-large {
+          width: 90px;
+          height: 90px;
+          object-fit: cover;
+          border-radius: 16px;
+          border: 2px solid #f3e6d8;
+          box-shadow: 0 1px 4px rgba(60,40,20,0.10);
+          background: #fff8f0;
+        }
+        .product-title-center {
+          margin: 0.2rem 0 0.3rem 0;
+          font-size: 1.18rem;
           font-weight: 700;
-          font-size: 1.1rem;
-          color: var(--primary-dark);
+          text-align: center;
+          color: #6d4c41;
+          letter-spacing: 0.01em;
+          width: 100%;
         }
-        @media (max-width: 700px) {
+        .product-desc-compact {
+          color: #7c5c4a;
+          min-height: 40px;
+          margin: 0 0 0.7rem 0;
+          text-align: left;
+          font-size: 0.98rem;
+          line-height: 1.5;
+          font-family: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+        }
+        .product-bottom-center-col {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          margin-top: 0.7rem;
+          gap: 0.5rem;
+        }
+        .product-price-center {
+          font-weight: 700;
+          font-size: 1.13rem;
+          color: #6d4c41;
+          margin-bottom: 0.1rem;
+        }
+        .product-btn-center {
+          background: #a1887f;
+          color: #fff;
+          border: none;
+          border-radius: 8px;
+          padding: 0.5rem 1.6rem;
+          font-size: 1.05rem;
+          font-weight: 600;
+          letter-spacing: 0.03em;
+          cursor: pointer;
+          transition: background 0.18s, box-shadow 0.18s;
+          box-shadow: 0 1px 4px rgba(60,40,20,0.08);
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+        .product-btn-center:hover {
+          background: #6d4c41;
+        }
+        @media (max-width: 900px) {
           .product-grid {
             grid-template-columns: 1fr;
-            gap: 1rem;
+            gap: 1.2rem;
           }
-          .product-card {
-            min-height: 260px;
+          .compact-product-card {
+            padding: 0.8rem 0.5rem 0.7rem 0.5rem;
+          }
+          .product-img-large {
+            width: 70px;
+            height: 70px;
           }
         }
       `}</style>
